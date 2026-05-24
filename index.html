@@ -1606,6 +1606,172 @@ body.detail-open { overflow: hidden; }
   .detail-diagram-card { padding: 1.5rem 1rem; }
 }
 
+
+/* ============ ABOUT SECTION ============ */
+.about-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 4.5vw;
+  align-items: center;
+}
+
+.about-portrait {
+  position: relative;
+}
+.about-portrait::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 18px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(167,139,250,0.4), rgba(244,184,96,0.2) 40%, transparent 70%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.about-portrait img {
+  width: 100%;
+  display: block;
+  border-radius: 16px;
+  border: 1px solid var(--border-bright);
+  filter: grayscale(1) contrast(1.06) brightness(0.97);
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+.about-portrait:hover img {
+  filter: grayscale(0.35) contrast(1.04) brightness(1);
+}
+.about-portrait-tag {
+  position: absolute;
+  bottom: 1.2rem;
+  left: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.95rem;
+  background: rgba(10, 14, 26, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.about-portrait-tag .live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 10px rgba(86, 211, 148, 0.6);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+.about-h2 {
+  font-size: clamp(2rem, 3.6vw, 3.4rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
+  color: var(--text);
+}
+.about-prose {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 580px;
+}
+.about-prose p {
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--text-dim);
+  font-weight: 300;
+}
+.about-prose strong { color: var(--text); font-weight: 500; }
+.about-prose em {
+  font-family: 'Instrument Serif', serif;
+  font-style: italic;
+  color: var(--warm);
+  font-weight: 400;
+  font-size: 1.08em;
+}
+
+.about-tags {
+  display: flex;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+.about-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: 0.5rem 0.95rem;
+  border: 1px solid var(--border-bright);
+  border-radius: 999px;
+  color: var(--text-dim);
+  background: rgba(255,255,255,0.02);
+}
+.about-tag.accent {
+  color: var(--accent);
+  border-color: rgba(79, 179, 255, 0.45);
+  background: var(--accent-soft);
+}
+
+.about-socials {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+.about-socials-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-right: 0.4rem;
+}
+.social-link {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  transition: all 0.25s;
+  text-decoration: none;
+}
+.social-link svg { width: 18px; height: 18px; }
+.social-link:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.06);
+}
+.social-link.linkedin:hover { background: rgba(10, 102, 194, 0.16); border-color: #0a66c2; color: #0a66c2; box-shadow: 0 4px 16px rgba(10, 102, 194, 0.25); }
+.social-link.x:hover { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.55); color: #fff; box-shadow: 0 4px 16px rgba(255,255,255,0.10); }
+.social-link.instagram:hover {
+  background: linear-gradient(135deg, rgba(252,175,69,0.16), rgba(220,39,67,0.16), rgba(208,68,177,0.16));
+  border-color: #d044b1;
+  color: #fff;
+  box-shadow: 0 4px 16px rgba(208,68,177,0.25);
+}
+.social-link.facebook:hover { background: rgba(24, 119, 242, 0.16); border-color: #1877f2; color: #1877f2; box-shadow: 0 4px 16px rgba(24, 119, 242, 0.25); }
+
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .about-portrait { max-width: 360px; margin: 0 auto; }
+  .about-prose { max-width: none; }
+}
+
 </style>
 </head>
 <body>
@@ -1621,6 +1787,7 @@ body.detail-open { overflow: hidden; }
     </a>
     <nav>
       <ul class="nav-links">
+        <li><a href="#about">About</a></li>
         <li><a href="#work">Work</a></li>
         <li><a href="#capabilities">Capabilities</a></li>
         <li><a href="#tools">Stack</a></li>
@@ -1653,6 +1820,48 @@ body.detail-open { overflow: hidden; }
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
       </a>
       <a href="#work" class="btn btn-secondary">View work</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section id="about" class="container">
+  <div class="about-grid reveal">
+    <div class="about-portrait">
+      <img src="./portrait.jpg" alt="Mark Dasihit — portrait, black and white">
+      <div class="about-portrait-tag">
+        <span class="live-dot"></span>
+        Lagos · Nigeria
+      </div>
+    </div>
+    <div class="about-content">
+      <span class="eyebrow">About</span>
+      <h2 class="about-h2">Operator, <span class="serif">venture builder,</span><br>building from Lagos.</h2>
+      <div class="about-prose">
+        <p>I'm Mark — a Lagos-based operator and venture builder with <strong>eight years spent launching and scaling African startups</strong>. My work sits at the intersection of operational systems, AI-driven workflows, and ventures that move physical goods at scale.</p>
+        <p>Currently building <strong>Yaries</strong>, a logistics OS for 1–20 bike fleets that handles dispatch, compliance, and delivery from a single control centre. Also building <strong>Merch Jungle</strong>, Nigeria's first local print-on-demand platform, with a long-range goal of raising <em>30 Nigerian POD millionaires by 2028</em>. Co-founder at <strong>Seamline Technologies</strong>.</p>
+        <p>The thread connecting all of it: turn African ambition into scalable digital businesses. Operations is the layer that makes the rest reliable — and that's where I focus.</p>
+      </div>
+      <div class="about-tags">
+        <span class="about-tag accent">8+ Years Operating</span>
+        <span class="about-tag">Venture Builder</span>
+        <span class="about-tag">Multi-Agent Builder</span>
+      </div>
+      <div class="about-socials">
+        <span class="about-socials-label">Find me on</span>
+        <a href="https://www.linkedin.com/in/mark-dasihit-573a47b3/" target="_blank" rel="noopener noreferrer" class="social-link linkedin" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14M8.34 18v-7.84H5.67V18M7 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3m11 9v-4.74c0-2.42-1.31-3.55-3.06-3.55-1.4 0-2.04.78-2.39 1.32v-1.13H10.1V18h2.67v-4.39c0-1.18.21-2.32 1.66-2.32 1.43 0 1.45 1.34 1.45 2.4V18"/></svg>
+        </a>
+        <a href="https://x.com/mark_dasihit" target="_blank" rel="noopener noreferrer" class="social-link x" aria-label="X (Twitter)">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/mydasihit/" target="_blank" rel="noopener noreferrer" class="social-link instagram" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://web.facebook.com/mark.dasihit" target="_blank" rel="noopener noreferrer" class="social-link facebook" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+        </a>
+      </div>
     </div>
   </div>
 </section>
