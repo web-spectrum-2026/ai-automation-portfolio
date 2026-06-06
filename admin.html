@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin · Mark Dasihit Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0a0e1a; --bg-elevated: #0f1424; --bg-card: #131a2c; --bg-card-hover: #1a2238;
+  --border: rgba(255,255,255,0.08); --border-bright: rgba(255,255,255,0.18);
+  --text: #e6edf3; --text-dim: #98a3b8; --text-muted: #5b6478;
+  --accent: #4fb3ff; --accent-soft: rgba(79,179,255,0.12); --accent-glow: rgba(79,179,255,0.35);
+  --green: #56d394; --warm: #f4b860; --red: #f47272;
+}
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'Inter', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased; letter-spacing: -0.01em; line-height: 1.5;
+}
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ================= LOGIN ================= */
+.login-wrap {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem;
+  background:
+    radial-gradient(900px circle at 20% 10%, rgba(79,179,255,0.10), transparent 55%),
+    radial-gradient(800px circle at 85% 90%, rgba(167,139,250,0.08), transparent 55%);
+}
+.login-card {
+  width: 100%; max-width: 400px; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: 20px; padding: 2.5rem 2.2rem;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+.login-brand { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.8rem; }
+.login-mark {
+  width: 40px; height: 40px; border-radius: 11px;
+  background: linear-gradient(135deg, var(--accent), #a78bfa);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--bg); font-size: 0.95rem;
+}
+.login-brand-text { display: flex; flex-direction: column; gap: 0.1rem; }
+.login-brand-text b { font-size: 0.98rem; font-weight: 600; }
+.login-brand-text span { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-muted); }
+.login-card h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.4rem; }
+.login-card .sub { color: var(--text-dim); font-size: 0.9rem; font-weight: 300; margin-bottom: 1.8rem; }
+.field { margin-bottom: 1.1rem; }
+.field label { display: block; font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.5rem; }
+.field input {
+  width: 100%; background: var(--bg-elevated); border: 1px solid var(--border);
+  border-radius: 10px; padding: 0.85rem 1rem; color: var(--text); font-size: 0.95rem; font-family: inherit;
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+.btn {
+  font-family: 'Inter', sans-serif; font-size: 0.92rem; font-weight: 500; cursor: pointer;
+  border-radius: 10px; border: 1px solid; padding: 0.85rem 1.4rem; transition: all 0.22s;
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+}
+.btn-primary { background: var(--accent); color: var(--bg); border-color: var(--accent); width: 100%; }
+.btn-primary:hover { background: transparent; color: var(--accent); box-shadow: 0 0 24px var(--accent-glow); }
+.btn-ghost { background: transparent; color: var(--text); border-color: var(--border-bright); }
+.btn-ghost:hover { border-color: var(--text); background: rgba(255,255,255,0.04); }
+.btn-danger { background: transparent; color: var(--red); border-color: rgba(244,114,114,0.4); }
+.btn-danger:hover { background: rgba(244,114,114,0.1); border-color: var(--red); }
+.login-error {
+  display: none; margin-top: 0.9rem; padding: 0.7rem 0.9rem; border-radius: 9px;
+  background: rgba(244,114,114,0.1); border: 1px solid rgba(244,114,114,0.3);
+  color: #ffb4b4; font-size: 0.82rem;
+}
+.login-error.show { display: block; }
+.security-note {
+  margin-top: 1.6rem; padding-top: 1.3rem; border-top: 1px solid var(--border);
+  font-size: 0.72rem; line-height: 1.5; color: var(--text-muted); display: flex; gap: 0.6rem;
+}
+.security-note svg { flex-shrink: 0; margin-top: 1px; color: var(--warm); }
+
+/* ================= APP ================= */
+.app { display: none; min-height: 100vh; }
+.app.show { display: grid; grid-template-columns: 240px 1fr; }
+
+.sidebar {
+  background: var(--bg-elevated); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 1.4rem 1rem; position: sticky; top: 0; height: 100vh;
+}
+.sidebar .login-brand { margin-bottom: 2rem; padding: 0 0.5rem; }
+.nav-group-label { font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); padding: 0 0.7rem; margin-bottom: 0.5rem; }
+.nav-item {
+  display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 0.8rem; border-radius: 10px;
+  color: var(--text-dim); cursor: pointer; font-size: 0.9rem; font-weight: 500; margin-bottom: 0.2rem;
+  border: 1px solid transparent; transition: all 0.18s; background: none; width: 100%; text-align: left; font-family: inherit;
+}
+.nav-item svg { width: 17px; height: 17px; }
+.nav-item:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+.nav-item.active { color: var(--accent); background: var(--accent-soft); border-color: rgba(79,179,255,0.25); }
+.sidebar-footer { margin-top: auto; display: flex; flex-direction: column; gap: 0.5rem; padding-top: 1rem; }
+.sidebar-status { font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 0.1em; color: var(--text-muted); text-align: center; padding: 0.4rem; }
+.sidebar-status b { color: var(--green); }
+
+.main { display: grid; grid-template-columns: 1fr 1fr; height: 100vh; overflow: hidden; }
+.editor { overflow-y: auto; padding: 2rem 2rem 4rem; }
+.preview-pane { background: #060912; border-left: 1px solid var(--border); display: flex; flex-direction: column; }
+.preview-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); background: var(--bg-elevated);
+}
+.preview-bar .pv-title { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; }
+.preview-bar .pv-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); }
+.preview-devices { display: flex; gap: 0.3rem; }
+.pv-device { background: transparent; border: 1px solid var(--border); color: var(--text-dim); border-radius: 7px; padding: 0.35rem 0.6rem; cursor: pointer; font-size: 0.7rem; transition: all 0.18s; font-family: inherit; }
+.pv-device.active { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+.preview-frame-wrap { flex: 1; overflow: auto; display: flex; justify-content: center; padding: 1rem; background: #060912; }
+#previewFrame {
+  width: 100%; height: 100%; border: 0; border-radius: 10px; background: #fff;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5); transition: width 0.3s ease, max-width 0.3s ease;
+}
+#previewFrame.mobile { max-width: 390px; }
+#previewFrame.tablet { max-width: 768px; }
+
+.panel { display: none; animation: fade 0.25s ease; }
+.panel.active { display: block; }
+@keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+.panel-head { margin-bottom: 1.8rem; }
+.panel-head h2 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em; }
+.panel-head p { color: var(--text-dim); font-size: 0.88rem; font-weight: 300; margin-top: 0.3rem; }
+
+/* Template cards */
+.tpl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+.tpl-card {
+  background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden;
+  cursor: pointer; transition: all 0.2s; text-align: left; font-family: inherit; padding: 0;
+}
+.tpl-card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
+.tpl-card.active { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.tpl-swatch { height: 76px; display: flex; }
+.tpl-swatch span { flex: 1; }
+.tpl-meta { padding: 0.9rem 1rem; }
+.tpl-meta b { font-size: 0.95rem; font-weight: 600; display: block; }
+.tpl-meta small { color: var(--text-muted); font-size: 0.74rem; }
+.tpl-card.active .tpl-meta b::after { content: ' ✓'; color: var(--accent); }
+
+/* Generic controls */
+.control { margin-bottom: 1.5rem; }
+.control > label { display: block; font-size: 0.85rem; font-weight: 500; margin-bottom: 0.5rem; }
+.control .hint { color: var(--text-muted); font-size: 0.75rem; font-weight: 300; margin-bottom: 0.6rem; }
+.control input[type="text"], .control textarea, .control input[type="tel"], .control input[type="email"] {
+  width: 100%; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 10px;
+  padding: 0.75rem 0.9rem; color: var(--text); font-size: 0.9rem; font-family: inherit; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s; resize: vertical;
+}
+.control input:focus, .control textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.control textarea { min-height: 92px; line-height: 1.55; }
+
+.color-row { display: flex; align-items: center; gap: 0.8rem; }
+.color-row input[type="color"] { width: 52px; height: 44px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg-elevated); cursor: pointer; padding: 4px; }
+.color-row input[type="text"] { flex: 1; max-width: 160px; }
+.swatch-presets { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 0.7rem; }
+.swatch-chip { width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--border-bright); cursor: pointer; transition: transform 0.15s; }
+.swatch-chip:hover { transform: scale(1.12); }
+
+.seg { display: inline-flex; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 10px; padding: 0.25rem; gap: 0.2rem; }
+.seg button { background: transparent; border: none; color: var(--text-dim); padding: 0.5rem 0.9rem; border-radius: 7px; cursor: pointer; font-size: 0.82rem; font-family: inherit; font-weight: 500; transition: all 0.18s; }
+.seg button.active { background: var(--accent-soft); color: var(--accent); }
+
+/* Layout list */
+.layout-list { display: flex; flex-direction: column; gap: 0.6rem; }
+.layout-row {
+  display: flex; align-items: center; gap: 0.8rem; background: var(--bg-card);
+  border: 1px solid var(--border); border-radius: 11px; padding: 0.8rem 1rem;
+}
+.layout-row .drag-num { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--text-muted); width: 18px; }
+.layout-row .lr-name { flex: 1; font-size: 0.9rem; font-weight: 500; text-transform: capitalize; }
+.layout-row.is-hidden { opacity: 0.45; }
+.lr-btn { background: var(--bg-elevated); border: 1px solid var(--border); color: var(--text-dim); width: 30px; height: 30px; border-radius: 7px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.18s; }
+.lr-btn:hover { color: var(--text); border-color: var(--border-bright); }
+.lr-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.lr-btn svg { width: 14px; height: 14px; }
+.toggle { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+.toggle input { opacity: 0; width: 0; height: 0; }
+.toggle .track { position: absolute; inset: 0; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 999px; transition: all 0.2s; cursor: pointer; }
+.toggle .track::before { content: ''; position: absolute; left: 3px; top: 2.5px; width: 17px; height: 17px; border-radius: 50%; background: var(--text-muted); transition: all 0.2s; }
+.toggle input:checked + .track { background: var(--accent-soft); border-color: var(--accent); }
+.toggle input:checked + .track::before { transform: translateX(18px); background: var(--accent); }
+
+/* Publish */
+.pub-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 1.4rem 1.5rem; margin-bottom: 1.1rem; }
+.pub-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.6rem; }
+.pub-card p { color: var(--text-dim); font-size: 0.85rem; font-weight: 300; line-height: 1.55; margin-bottom: 1rem; }
+.pub-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.callout {
+  display: flex; gap: 0.8rem; padding: 1rem 1.2rem; border-radius: 12px;
+  background: rgba(244,184,96,0.08); border: 1px solid rgba(244,184,96,0.25); margin-bottom: 1.6rem;
+}
+.callout svg { flex-shrink: 0; color: var(--warm); margin-top: 2px; }
+.callout div { font-size: 0.82rem; line-height: 1.55; color: var(--text-dim); }
+.callout b { color: var(--text); font-weight: 600; }
+
+.save-flash {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--green); color: #04140b; font-weight: 600; font-size: 0.85rem;
+  padding: 0.7rem 1.3rem; border-radius: 999px; box-shadow: 0 8px 28px rgba(86,211,148,0.4);
+  opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 200;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.save-flash.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* Responsive: stack editor over preview on narrow screens */
+@media (max-width: 1100px) {
+  .main { grid-template-columns: 1fr; grid-template-rows: 1fr; }
+  .preview-pane { display: none; }
+  .preview-pane.mobile-show { display: flex; position: fixed; inset: 0; z-index: 150; }
+}
+@media (max-width: 720px) {
+  .app.show { grid-template-columns: 1fr; }
+  .sidebar { position: static; height: auto; flex-direction: row; flex-wrap: wrap; gap: 0.3rem; align-items: center; }
+  .sidebar .login-brand { width: 100%; margin-bottom: 1rem; }
+  .nav-group-label { display: none; }
+  .nav-item { width: auto; padding: 0.55rem 0.8rem; }
+  .nav-item span { display: none; }
+  .sidebar-footer { margin: 0 0 0 auto; flex-direction: row; }
+  .editor { padding: 1.5rem 1.2rem 5rem; }
+}
+.mobile-preview-toggle { display: none; }
+@media (max-width: 1100px) {
+  .mobile-preview-toggle { display: inline-flex; }
+}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div class="login-wrap" id="loginView">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="login-mark">MD</div>
+      <div class="login-brand-text"><b>Portfolio Studio</b><span>Admin Console</span></div>
+    </div>
+    <h1>Welcome back</h1>
+    <p class="sub">Sign in to manage your site's design, content, and layout.</p>
+    <form id="loginForm" autocomplete="off">
+      <div class="field">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="you@email.com" autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="••••••••••" autocomplete="current-password">
+      </div>
+      <button type="submit" class="btn btn-primary">
+        Sign in
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </button>
+      <div class="login-error" id="loginError">Incorrect email or password.</div>
+    </form>
+    <div class="security-note">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>This login is a client-side gate for convenience, not bank-grade security. For private data, pair it with a real auth backend (Netlify Identity, Cloudflare Access, etc.).</span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div class="app" id="appView">
+  <aside class="sidebar">
+    <div class="login-brand">
+      <div class="login-mark">MD</div>
+      <div class="login-brand-text"><b>Portfolio Studio</b><span>Admin</span></div>
+    </div>
+    <div class="nav-group-label">Manage</div>
+    <button class="nav-item active" data-panel="templates">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg>
+      <span>Templates</span>
+    </button>
+    <button class="nav-item" data-panel="style">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="6.5" cy="12" r="2.5"/><circle cx="15" cy="17" r="2.5"/><path d="M2 22c2-4 6-6 10-6"/></svg>
+      <span>Style</span>
+    </button>
+    <button class="nav-item" data-panel="content">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h14"/></svg>
+      <span>Content</span>
+    </button>
+    <button class="nav-item" data-panel="layout">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="5" rx="1"/><rect x="3" y="11" width="18" height="5" rx="1"/><rect x="3" y="19" width="18" height="2" rx="1"/></svg>
+      <span>Layout</span>
+    </button>
+    <button class="nav-item" data-panel="publish">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      <span>Publish</span>
+    </button>
+    <div class="sidebar-footer">
+      <div class="sidebar-status">● <b>Saved</b> to this browser</div>
+      <button class="btn btn-ghost mobile-preview-toggle" id="mobilePreviewToggle" style="font-size:0.8rem;padding:0.6rem;">Preview</button>
+      <button class="btn btn-ghost" id="logoutBtn" style="font-size:0.8rem;padding:0.6rem;">Log out</button>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="editor">
+      <!-- TEMPLATES -->
+      <section class="panel active" id="panel-templates">
+        <div class="panel-head"><h2>Templates</h2><p>Pick a vibe. It instantly restyles the whole site — colours, surfaces, and type.</p></div>
+        <div class="tpl-grid" id="tplGrid"></div>
+      </section>
+
+      <!-- STYLE -->
+      <section class="panel" id="panel-style">
+        <div class="panel-head"><h2>Style</h2><p>Fine-tune on top of your template.</p></div>
+        <div class="control">
+          <label>Accent colour</label>
+          <div class="hint">Overrides the template's accent. Clear it to fall back to the template default.</div>
+          <div class="color-row">
+            <input type="color" id="accentColor" value="#4fb3ff">
+            <input type="text" id="accentHex" class="mono" placeholder="#4fb3ff">
+            <button class="btn btn-ghost" id="accentClear" style="padding:0.6rem 1rem;font-size:0.8rem;">Use template</button>
+          </div>
+          <div class="swatch-presets" id="accentPresets"></div>
+        </div>
+        <div class="control">
+          <label>Corner roundness</label>
+          <div class="hint">Affects buttons and cards globally.</div>
+          <div class="seg" id="radiusSeg">
+            <button data-radius="">Default</button>
+            <button data-radius="6px">Sharp</button>
+            <button data-radius="14px">Soft</button>
+            <button data-radius="22px">Round</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTENT -->
+      <section class="panel" id="panel-content">
+        <div class="panel-head"><h2>Content</h2><p>Edit the words. Changes preview live on the right.</p></div>
+        <div class="control"><label>Hero — line 1</label><input type="text" data-content="heroTitleA"></div>
+        <div class="control"><label>Hero — line 2 (accent)</label><input type="text" data-content="heroTitleB"></div>
+        <div class="control"><label>Hero — subtitle</label><textarea data-content="heroSub"></textarea></div>
+        <div class="control"><label>About — headline</label><input type="text" data-content="aboutHeadline"></div>
+        <div class="control"><label>About — paragraph 1</label><textarea data-content="aboutP1"></textarea></div>
+        <div class="control"><label>About — paragraph 2</label><textarea data-content="aboutP2"></textarea></div>
+        <div class="control"><label>About — paragraph 3</label><textarea data-content="aboutP3"></textarea></div>
+        <div class="control"><label>Footer text</label><input type="text" data-content="footerCopy"></div>
+        <div class="panel-head" style="margin-top:2rem;"><h2 style="font-size:1.1rem;">Contact</h2></div>
+        <div class="control"><label>Email</label><input type="email" data-contact="email"></div>
+        <div class="control"><label>Phone (call link)</label><input type="tel" data-contact="phone" placeholder="+234..."></div>
+        <div class="control"><label>WhatsApp number (digits only)</label><input type="tel" data-contact="whatsapp" placeholder="234..."></div>
+      </section>
+
+      <!-- LAYOUT -->
+      <section class="panel" id="panel-layout">
+        <div class="panel-head"><h2>Layout</h2><p>Reorder sections or hide them. The hero always stays first.</p></div>
+        <div class="layout-list" id="layoutList"></div>
+      </section>
+
+      <!-- PUBLISH -->
+      <section class="panel" id="panel-publish">
+        <div class="panel-head"><h2>Publish</h2><p>Your edits save to this browser automatically. To make them live for everyone, publish the config.</p></div>
+        <div class="callout">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          <div><b>How publishing works.</b> Changes here are stored in <i>your</i> browser (instant preview). To push them to the public site for all visitors, export the config below and commit <span class="mono">portfolio-config.json</span> to the repo — or just hand it to your assistant to deploy.</div>
+        </div>
+        <div class="pub-card">
+          <h3>💾 Save to this browser</h3>
+          <p>Already done automatically on every change. Use this to force a re-save.</p>
+          <div class="pub-actions"><button class="btn btn-primary" id="saveBtn" style="width:auto;">Save now</button></div>
+        </div>
+        <div class="pub-card">
+          <h3>⬇️ Export config</h3>
+          <p>Download <span class="mono">portfolio-config.json</span> — commit it to the repo (or send it to your assistant) to publish globally.</p>
+          <div class="pub-actions">
+            <button class="btn btn-ghost" id="exportBtn" style="width:auto;">Download JSON</button>
+            <button class="btn btn-ghost" id="copyBtn" style="width:auto;">Copy to clipboard</button>
+          </div>
+        </div>
+        <div class="pub-card">
+          <h3>↺ Reset</h3>
+          <p>Discard all local edits and restore the shipped defaults.</p>
+          <div class="pub-actions"><button class="btn btn-danger" id="resetBtn" style="width:auto;">Reset to defaults</button></div>
+        </div>
+      </section>
+    </div>
+
+    <div class="preview-pane" id="previewPane">
+      <div class="preview-bar">
+        <div class="pv-title"><span class="pv-dot"></span> Live preview</div>
+        <div class="preview-devices">
+          <button class="pv-device active" data-device="desktop">Desktop</button>
+          <button class="pv-device" data-device="tablet">Tablet</button>
+          <button class="pv-device" data-device="mobile">Mobile</button>
+          <button class="pv-device" id="previewClose" style="display:none;">✕</button>
+        </div>
+      </div>
+      <div class="preview-frame-wrap">
+        <iframe id="previewFrame" src="./index.html" title="Site preview"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="save-flash" id="saveFlash"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Saved</div>
+
+<script src="./config.js"></script>
+<script>
+(function () {
+  'use strict';
+  var PASSWORD_HASH = '8b726c25f816b2417f39078bee155057e9f73079e53d64b05098e4d130a3d5bf';
+  var ADMIN_EMAIL = 'mydasihit@gmail.com';
+  var SESSION_KEY = 'adminAuthed';
+
+  var loginView = document.getElementById('loginView');
+  var appView = document.getElementById('appView');
+
+  // ---------- AUTH ----------
+  async function sha256(str) {
+    if (window.crypto && crypto.subtle) {
+      var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+      return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+    }
+    return null; // secure context required
+  }
+
+  function enterApp() {
+    loginView.style.display = 'none';
+    appView.classList.add('show');
+    initStudio();
+  }
+
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    enterApp();
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var email = document.getElementById('email').value.trim().toLowerCase();
+    var pw = document.getElementById('password').value;
+    var err = document.getElementById('loginError');
+    var hash = await sha256(pw);
+    if (email === ADMIN_EMAIL && hash === PASSWORD_HASH) {
+      sessionStorage.setItem(SESSION_KEY, '1');
+      err.classList.remove('show');
+      enterApp();
+    } else {
+      err.classList.add('show');
+      document.getElementById('password').value = '';
+    }
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', function () {
+    sessionStorage.removeItem(SESSION_KEY);
+    location.reload();
+  });
+
+  // ---------- STUDIO ----------
+  var cfg, frame, frameReady = false;
+
+  function postToPreview() {
+    if (frame && frame.contentWindow) {
+      frame.contentWindow.postMessage({ type: 'applyConfig', config: cfg }, '*');
+    }
+  }
+
+  function persist(flash) {
+    PortfolioConfig.saveConfig(cfg);
+    postToPreview();
+    if (flash) showFlash();
+  }
+
+  var flashTimer;
+  function showFlash() {
+    var f = document.getElementById('saveFlash');
+    f.classList.add('show');
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(function () { f.classList.remove('show'); }, 1400);
+  }
+
+  function initStudio() {
+    cfg = PortfolioConfig.getConfig();
+    frame = document.getElementById('previewFrame');
+    frame.addEventListener('load', function () { frameReady = true; setTimeout(postToPreview, 120); });
+
+    buildTemplates();
+    buildStyle();
+    buildContent();
+    buildLayout();
+    bindNav();
+    bindPublish();
+    bindPreviewDevices();
+  }
+
+  // Sidebar nav
+  function bindNav() {
+    document.querySelectorAll('.nav-item').forEach(function (item) {
+      item.addEventListener('click', function () {
+        document.querySelectorAll('.nav-item').forEach(function (n) { n.classList.remove('active'); });
+        document.querySelectorAll('.panel').forEach(function (p) { p.classList.remove('active'); });
+        item.classList.add('active');
+        document.getElementById('panel-' + item.dataset.panel).classList.add('active');
+      });
+    });
+  }
+
+  // Templates
+  function buildTemplates() {
+    var grid = document.getElementById('tplGrid');
+    grid.innerHTML = '';
+    Object.keys(PortfolioConfig.TEMPLATES).forEach(function (key) {
+      var t = PortfolioConfig.TEMPLATES[key];
+      var card = document.createElement('button');
+      card.className = 'tpl-card' + (cfg.template === key ? ' active' : '');
+      card.dataset.tpl = key;
+      var sw = t.swatch.map(function (c) { return '<span style="background:' + c + '"></span>'; }).join('');
+      card.innerHTML = '<div class="tpl-swatch">' + sw + '</div><div class="tpl-meta"><b>' + t.name + '</b><small>' + t.vibe + '</small></div>';
+      card.addEventListener('click', function () {
+        cfg.template = key;
+        document.querySelectorAll('.tpl-card').forEach(function (c) { c.classList.remove('active'); });
+        card.classList.add('active');
+        persist(true);
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  // Style
+  function buildStyle() {
+    var colorInput = document.getElementById('accentColor');
+    var hexInput = document.getElementById('accentHex');
+    var presets = document.getElementById('accentPresets');
+    var current = cfg.style.accent || PortfolioConfig.TEMPLATES[cfg.template].vars['--accent'];
+    colorInput.value = toHex(current);
+    hexInput.value = cfg.style.accent || '';
+
+    function setAccent(val) {
+      cfg.style.accent = val;
+      hexInput.value = val || '';
+      if (val) colorInput.value = toHex(val);
+      persist(true);
+    }
+    colorInput.addEventListener('input', function () { setAccent(colorInput.value); });
+    hexInput.addEventListener('change', function () { setAccent(hexInput.value.trim()); });
+    document.getElementById('accentClear').addEventListener('click', function () { setAccent(''); });
+
+    ['#4fb3ff', '#a78bfa', '#f4a259', '#56d394', '#fb7185', '#f0abfc', '#5eead4', '#1f6feb'].forEach(function (c) {
+      var chip = document.createElement('button');
+      chip.className = 'swatch-chip'; chip.style.background = c; chip.title = c;
+      chip.addEventListener('click', function () { setAccent(c); });
+      presets.appendChild(chip);
+    });
+
+    // Radius
+    var seg = document.getElementById('radiusSeg');
+    function syncRadius() {
+      seg.querySelectorAll('button').forEach(function (b) {
+        b.classList.toggle('active', (b.dataset.radius || '') === (cfg.style.radius || ''));
+      });
+    }
+    seg.querySelectorAll('button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        cfg.style.radius = b.dataset.radius || '';
+        syncRadius(); persist(true);
+      });
+    });
+    syncRadius();
+  }
+
+  // Content
+  function buildContent() {
+    document.querySelectorAll('[data-content]').forEach(function (el) {
+      var key = el.dataset.content;
+      el.value = cfg.content[key] != null ? cfg.content[key] : '';
+      el.addEventListener('input', function () {
+        cfg.content[key] = el.value;
+        persist(false);
+      });
+      el.addEventListener('change', function () { persist(true); });
+    });
+    document.querySelectorAll('[data-contact]').forEach(function (el) {
+      var key = el.dataset.contact;
+      el.value = cfg.contact[key] != null ? cfg.contact[key] : '';
+      el.addEventListener('input', function () {
+        cfg.contact[key] = el.value.trim();
+        persist(false);
+      });
+      el.addEventListener('change', function () { persist(true); });
+    });
+  }
+
+  // Layout
+  var SECTION_LABELS = { work: 'Selected Work', about: 'About', capabilities: 'Capabilities', tools: 'Stack', workflows: 'Workflows', approach: 'Approach', contact: 'Contact' };
+  function buildLayout() {
+    var list = document.getElementById('layoutList');
+    function render() {
+      list.innerHTML = '';
+      cfg.layout.order.forEach(function (id, idx) {
+        var visible = cfg.layout.visible[id] !== false;
+        var row = document.createElement('div');
+        row.className = 'layout-row' + (visible ? '' : ' is-hidden');
+        row.innerHTML =
+          '<span class="drag-num">' + String(idx + 1).padStart(2, '0') + '</span>' +
+          '<span class="lr-name">' + (SECTION_LABELS[id] || id) + '</span>' +
+          '<button class="lr-btn" data-act="up" ' + (idx === 0 ? 'disabled' : '') + ' aria-label="Move up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="18 15 12 9 6 15"/></svg></button>' +
+          '<button class="lr-btn" data-act="down" ' + (idx === cfg.layout.order.length - 1 ? 'disabled' : '') + ' aria-label="Move down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg></button>' +
+          '<label class="toggle"><input type="checkbox" ' + (visible ? 'checked' : '') + '><span class="track"></span></label>';
+        row.querySelector('[data-act="up"]').addEventListener('click', function () {
+          if (idx > 0) { var o = cfg.layout.order; o.splice(idx - 1, 0, o.splice(idx, 1)[0]); render(); persist(true); }
+        });
+        row.querySelector('[data-act="down"]').addEventListener('click', function () {
+          var o = cfg.layout.order; if (idx < o.length - 1) { o.splice(idx + 1, 0, o.splice(idx, 1)[0]); render(); persist(true); }
+        });
+        row.querySelector('input').addEventListener('change', function (e) {
+          cfg.layout.visible[id] = e.target.checked;
+          row.classList.toggle('is-hidden', !e.target.checked);
+          persist(true);
+        });
+        list.appendChild(row);
+      });
+    }
+    render();
+  }
+
+  // Publish
+  function bindPublish() {
+    document.getElementById('saveBtn').addEventListener('click', function () { persist(true); });
+    document.getElementById('exportBtn').addEventListener('click', function () {
+      var blob = new Blob([JSON.stringify(cfg, null, 2)], { type: 'application/json' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob); a.download = 'portfolio-config.json'; a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+    });
+    document.getElementById('copyBtn').addEventListener('click', function () {
+      navigator.clipboard.writeText(JSON.stringify(cfg, null, 2)).then(function () { showFlash(); });
+    });
+    document.getElementById('resetBtn').addEventListener('click', function () {
+      if (confirm('Discard all local edits and restore defaults?')) {
+        PortfolioConfig.resetConfig();
+        cfg = PortfolioConfig.getConfig();
+        buildTemplates(); buildStyle(); buildContent(); buildLayout();
+        persist(true);
+      }
+    });
+  }
+
+  // Preview devices
+  function bindPreviewDevices() {
+    document.querySelectorAll('.pv-device[data-device]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.querySelectorAll('.pv-device[data-device]').forEach(function (x) { x.classList.remove('active'); });
+        b.classList.add('active');
+        var f = document.getElementById('previewFrame');
+        f.className = b.dataset.device === 'desktop' ? '' : b.dataset.device;
+      });
+    });
+    var pane = document.getElementById('previewPane');
+    var close = document.getElementById('previewClose');
+    document.getElementById('mobilePreviewToggle').addEventListener('click', function () {
+      pane.classList.add('mobile-show'); close.style.display = '';
+    });
+    close.addEventListener('click', function () { pane.classList.remove('mobile-show'); close.style.display = 'none'; });
+  }
+
+  // helpers
+  function toHex(c) {
+    if (!c) return '#4fb3ff';
+    if (c[0] === '#') return c.length === 4 ? '#' + c[1] + c[1] + c[2] + c[2] + c[3] + c[3] : c;
+    return '#4fb3ff';
+  }
+})();
+</script>
+</body>
+</html>
