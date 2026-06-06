@@ -766,6 +766,102 @@ section:first-of-type { padding-top: calc(var(--nav-h) + 4rem); }
   background-color: #ff7755;
 }
 
+/* ============ PRESS ============ */
+.press-card {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 2.6rem 2.8rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+  max-width: 880px;
+}
+.press-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--border-bright);
+  background: var(--bg-card-hover);
+}
+.press-card-glow {
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, var(--accent-soft), transparent 65%);
+  pointer-events: none;
+  opacity: 0.8;
+  transition: opacity 0.3s;
+}
+.press-card:hover .press-card-glow { opacity: 1.3; }
+.press-top {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  margin-bottom: 1.4rem; position: relative;
+}
+.press-pub {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.5rem;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1;
+}
+.press-kicker {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding-left: 1rem;
+  border-left: 1px solid var(--border);
+}
+.press-headline {
+  font-size: clamp(1.3rem, 2.2vw, 1.9rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
+  color: var(--text);
+  margin-bottom: 1.3rem;
+  position: relative;
+}
+.press-quote {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(1.5rem, 2.8vw, 2.3rem);
+  font-style: italic;
+  line-height: 1.25;
+  color: var(--warm);
+  margin-bottom: 1.2rem;
+  position: relative;
+}
+.press-qmark { opacity: 0.55; }
+.press-blurb {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--text-dim);
+  font-weight: 300;
+  max-width: 640px;
+  margin-bottom: 1.8rem;
+  position: relative;
+}
+.press-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent);
+  font-size: 0.92rem;
+  font-weight: 500;
+  position: relative;
+  transition: gap 0.25s ease;
+}
+.press-card:hover .press-cta { gap: 0.85rem; }
+
+@media (max-width: 768px) {
+  .press-card { padding: 1.8rem 1.5rem; }
+  .press-top { gap: 0.6rem; margin-bottom: 1.1rem; }
+  .press-kicker { padding-left: 0; border-left: 0; }
+  .press-pub { font-size: 1.3rem; }
+}
+
 /* ============ CAPABILITIES ============ */
 .cap-grid {
   display: grid;
@@ -2192,6 +2288,7 @@ section:first-of-type {
       <ul class="nav-links">
         <li><a href="#work">Work</a></li>
         <li><a href="#about">About</a></li>
+        <li><a href="#press">Press</a></li>
         <li><a href="#capabilities">Capabilities</a></li>
         <li><a href="#tools">Stack</a></li>
         <li><a href="#workflows">Workflows</a></li>
@@ -2695,6 +2792,27 @@ section:first-of-type {
       </div>
     </div>
   </div>
+</section>
+
+<!-- ============ PRESS ============ -->
+<section id="press" class="container">
+  <div class="section-head reveal">
+    <span class="eyebrow">As Seen In The Press</span>
+    <h2>Recognized for <span class="serif">systems-driven</span> venture building.</h2>
+  </div>
+  <a class="press-card reveal" href="https://indexprima.com/founder-spotlight-mark-dasihit-the-architect-of-systems-driven-venture-building/" target="_blank" rel="noopener noreferrer">
+    <div class="press-card-glow"></div>
+    <div class="press-top">
+      <span class="press-pub">Index Prima</span>
+      <span class="press-kicker">Founder Spotlight · April 2026</span>
+    </div>
+    <h3 class="press-headline">Mark Dasihit — The Architect of Systems-Driven Venture Building</h3>
+    <p class="press-quote"><span class="press-qmark">“</span>The Industrialization of the Startup<span class="press-qmark">”</span></p>
+    <p class="press-blurb">Index Prima profiles how Mark re-engineers the path from concept to market for African startups — turning fragmented, informal sectors into standardized, high-efficiency digital systems through ventures like Yaries Venture Labs.</p>
+    <span class="press-cta">Read the feature
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+    </span>
+  </a>
 </section>
 
 <!-- ============ CAPABILITIES ============ -->
