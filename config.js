@@ -1,5 +1,5 @@
 /* ============================================================
-   Portfolio Config — shared by index.html (live site) and admin.html (editor)
+   Portfolio Config, shared by index.html (live site) and admin.html (editor)
    Single source of truth for templates, defaults, persistence, and apply logic.
    ============================================================ */
 (function (global) {
@@ -78,7 +78,7 @@
 
   // Template-specific CSS (fonts, light-mode surface fixes) injected once.
   const TEMPLATE_CSS = `
-    /* Terminal — monospace display + square edges */
+    /* Terminal, monospace display + square edges */
     body.tpl-terminal .hero-title,
     body.tpl-terminal .section-head h2,
     body.tpl-terminal .about-h2,
@@ -88,7 +88,7 @@
     body.tpl-terminal .hero-title .gradient,
     body.tpl-terminal .contact-headline { -webkit-text-fill-color: var(--text); background: none; }
 
-    /* Daylight — flip dark-first hardcoded surfaces so the light theme holds together */
+    /* Daylight, flip dark-first hardcoded surfaces so the light theme holds together */
     body.tpl-daylight { background: var(--bg); }
     body.tpl-daylight::before {
       background-image:
@@ -116,7 +116,7 @@
     /* Diagram cards intentionally stay dark on Daylight (read like code blocks) */
     body.tpl-daylight .detail-diagram-card { background: #131a2c; border-color: rgba(255,255,255,0.10); }
 
-    /* Corner roundness override (safe subset — pills keep their shape) */
+    /* Corner roundness override (safe subset, pills keep their shape) */
     body.tpl-radius .btn,
     body.tpl-radius .cap-card,
     body.tpl-radius .project-card-compact,
@@ -141,9 +141,9 @@
       heroTitleB: 'that run operations.',
       heroSub: 'Autonomous AI and operational workflows for startups that ship.',
       aboutHeadline: 'Operator, venture builder, building from Jos.',
-      aboutP1: "I'm Mark — a Jos-based operator and venture builder with eight years spent launching and scaling African startups. My work sits at the intersection of operational systems, AI-driven workflows, and ventures that move physical goods at scale.",
+      aboutP1: "I'm Mark, a Jos-based operator and venture builder with eight years spent launching and scaling African startups. My work sits at the intersection of operational systems, AI-driven workflows, and ventures that move physical goods at scale.",
       aboutP2: "Currently building Yaries, a logistics OS for 1–20 bike fleets that handles dispatch, compliance, and delivery from a single control centre. Also building Merch Jungle, Nigeria's first local print-on-demand platform, with a long-range goal of raising 30 Nigerian POD millionaires by 2028. Co-founder at Seamline Technologies.",
-      aboutP3: "The thread connecting all of it: turn African ambition into scalable digital businesses. Operations is the layer that makes the rest reliable — and that's where I focus.",
+      aboutP3: "The thread connecting all of it: turn African ambition into scalable digital businesses. Operations is the layer that makes the rest reliable, and that's where I focus.",
       footerCopy: '© Yaries Intelligent Machines 2026'
     },
     contact: {
@@ -328,7 +328,7 @@
       }
     });
 
-    // 4) Cross-tab sync — if the admin saves in another tab, update this one live.
+    // 4) Cross-tab sync, if the admin saves in another tab, update this one live.
     window.addEventListener('storage', function (e) {
       if (e.key === STORAGE_KEY) {
         try { applyConfig(getConfig(), document); } catch (err) {}
