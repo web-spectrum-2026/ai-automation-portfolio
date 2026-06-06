@@ -2117,6 +2117,64 @@ section:first-of-type {
   .mb-nav-item { min-width: 46px; padding: 0.45rem 0.4rem; }
 }
 
+
+/* ============ WORK LIST COLLAPSE / VIEW-ALL ============ */
+.project-card-compact.collapse-hidden { display: none !important; }
+.project-card-compact.is-faded {
+  opacity: 0.4;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.35) 55%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 0%, rgba(0,0,0,0.35) 55%, transparent 100%);
+}
+.project-card-compact.is-faded:hover { transform: none; }
+
+/* In collapsed mode hide the category headers — clean teaser feel */
+.work-grid.is-collapsed .category-header { display: none; }
+.work-grid.is-collapsed .category-group { gap: 0; }
+
+.work-toggle {
+  display: none;
+  justify-content: center;
+  margin-top: 0.5rem;
+  position: relative;
+}
+.work-toggle.visible { display: flex; }
+.work-toggle button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  padding: 0.9rem 1.7rem;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border-bright);
+  border-radius: 999px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.work-toggle button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 26px var(--accent-glow);
+  transform: translateY(-1px);
+}
+.work-toggle .toggle-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+}
+.work-toggle .chevron {
+  width: 16px; height: 16px;
+  transition: transform 0.3s ease;
+}
+.work-toggle.expanded .chevron { transform: rotate(180deg); }
+
 </style>
 </head>
 <body>
@@ -2587,6 +2645,13 @@ section:first-of-type {
     <div class="empty-state" id="emptyState">
       No projects match these filters · Try clearing
     </div>
+  </div>
+  <div class="work-toggle" id="workToggle">
+    <button type="button" id="workToggleBtn" aria-expanded="false">
+      <span id="workToggleLabel">View all projects</span>
+      <span class="toggle-count" id="workToggleCount"></span>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
   </div>
 </section>
 
@@ -3137,8 +3202,15 @@ section:first-of-type {
   const projectCards = document.querySelectorAll('#work .project-card-compact');
   const categoryGroups = document.querySelectorAll('.category-group');
   const emptyState = document.getElementById('emptyState');
+  const workGrid = document.querySelector('#work .work-grid');
+  const workToggle = document.getElementById('workToggle');
+  const workToggleBtn = document.getElementById('workToggleBtn');
+  const workToggleLabel = document.getElementById('workToggleLabel');
+  const workToggleCount = document.getElementById('workToggleCount');
+  const COLLAPSE_LIMIT = 4; // fully-shown cards before the faded one
   let activeFilter = 'all';
   let searchTerm = '';
+  let worksExpanded = false;
 
   // Pre-cache searchable text per card (title + tools + category)
   projectCards.forEach((card) => {
@@ -3148,29 +3220,67 @@ section:first-of-type {
   });
 
   function applyFilters() {
-    let totalVisible = 0;
+    // Collapse is active only on the default unfiltered view (and when not expanded)
+    const collapsing = !worksExpanded && activeFilter === 'all' && !searchTerm;
+    let totalVisible = 0;   // total matching (regardless of collapse)
+    let shown = 0;          // running index among matched cards (for collapse cutoff)
+
     categoryGroups.forEach((group) => {
       const groupCat = group.dataset.category;
-      let groupVisible = 0;
+      let groupMatched = 0;
+      let groupRendered = 0; // cards actually visible in this group (after collapse)
       const groupCards = group.querySelectorAll('.project-card-compact');
       groupCards.forEach((card) => {
         const tags = (card.dataset.tags || '').toLowerCase().split(/\s+/);
         const text = card.dataset.searchText || '';
         const matchesFilter = activeFilter === 'all' || tags.includes(activeFilter);
         const matchesSearch = !searchTerm || text.includes(searchTerm);
-        if (matchesFilter && matchesSearch) {
+        const matches = matchesFilter && matchesSearch;
+
+        // reset collapse-specific classes each pass
+        card.classList.remove('is-faded', 'collapse-hidden');
+
+        if (matches) {
           card.classList.remove('hidden');
-          groupVisible++;
+          card.classList.add('in'); // ensure visible regardless of scroll-reveal state
           totalVisible++;
+          groupMatched++;
+
+          if (collapsing) {
+            if (shown < COLLAPSE_LIMIT) {
+              groupRendered++;
+            } else if (shown === COLLAPSE_LIMIT) {
+              card.classList.add('is-faded'); // the faded 5th
+              groupRendered++;
+            } else {
+              card.classList.add('collapse-hidden');
+            }
+          } else {
+            groupRendered++;
+          }
+          shown++;
         } else {
           card.classList.add('hidden');
         }
       });
-      // Hide the entire group if (a) filter is set to a different category, or (b) all its cards are hidden
+
       const filterHidesGroup = activeFilter !== 'all' && activeFilter !== groupCat;
-      group.classList.toggle('hidden', filterHidesGroup || groupVisible === 0);
+      group.classList.toggle('hidden', filterHidesGroup || groupMatched === 0 || groupRendered === 0);
     });
+
+    workGrid.classList.toggle('is-collapsed', collapsing);
     emptyState.classList.toggle('visible', totalVisible === 0);
+
+    // Toggle button: only relevant on the default view when there's more to reveal
+    if (activeFilter === 'all' && !searchTerm && totalVisible > COLLAPSE_LIMIT + 1) {
+      workToggle.classList.add('visible');
+      workToggle.classList.toggle('expanded', worksExpanded);
+      workToggleBtn.setAttribute('aria-expanded', worksExpanded ? 'true' : 'false');
+      workToggleLabel.textContent = worksExpanded ? 'Show less' : 'View all projects';
+      workToggleCount.textContent = worksExpanded ? '' : String(totalVisible).padStart(2, '0');
+    } else {
+      workToggle.classList.remove('visible');
+    }
 
     // Update "All" count
     const allPill = document.querySelector('.filter-pill[data-filter="all"] .filter-pill-count');
@@ -3200,6 +3310,24 @@ section:first-of-type {
     searchBar.classList.remove('has-value');
     searchInput.focus();
     applyFilters();
+  });
+
+  // View all / Show less toggle for the Work list
+  workToggleBtn.addEventListener('click', () => {
+    worksExpanded = !worksExpanded;
+    applyFilters();
+    if (!worksExpanded) {
+      // Scrolling back up keeps the user oriented when collapsing
+      const workSection = document.getElementById('work');
+      if (workSection) workSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+  // Filtering or searching always exits the collapsed teaser
+  filterPills.forEach((pill) => {
+    pill.addEventListener('click', () => {
+      if (pill.dataset.filter !== 'all') worksExpanded = false;
+    });
   });
 
   // ============ PROJECT DETAIL — HASH ROUTING ============
