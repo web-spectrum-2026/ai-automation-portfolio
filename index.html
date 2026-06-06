@@ -5279,14 +5279,6 @@ section:first-of-type {
 </script>
 
 
-<!-- ============ ADMIN-MANAGED CONFIG (templates / content / layout) ============ -->
-<script src="./config.js"></script>
-<script>
-  if (window.PortfolioConfig && PortfolioConfig.initLiveSite) {
-    PortfolioConfig.initLiveSite();
-  }
-</script>
-
 <!-- ============ FLOATING MOBILE BOTTOM NAV ============ -->
 <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Mobile section navigation">
   <a href="#top" class="mb-nav-item" data-target="top">
@@ -5326,6 +5318,14 @@ section:first-of-type {
     <span>Contact</span>
   </a>
 </nav>
+
+<!-- ============ ADMIN-MANAGED CONFIG (templates / content / layout) ============ -->
+<script src="./config.js"></script>
+<script>
+  if (window.PortfolioConfig && PortfolioConfig.initLiveSite) {
+    PortfolioConfig.initLiveSite();
+  }
+</script>
 
 </body>
 </html>
