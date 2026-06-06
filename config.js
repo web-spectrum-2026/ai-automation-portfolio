@@ -292,13 +292,46 @@
     return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
   }
 
+  // ---------- global published config (portfolio-config.json) ----------
+  // Priority when rendering the live site:
+  //   defaults  <  global portfolio-config.json (published, seen by everyone)  <  localStorage (this browser's admin edits)
+  function fetchGlobal(cb) {
+    try {
+      fetch('./portfolio-config.json?t=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) { cb(j); })
+        .catch(function () { cb(null); });
+    } catch (e) { cb(null); }
+  }
+
+  function getLocalRaw() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null'); } catch (e) { return null; }
+  }
+
   // ---------- live-site bootstrap ----------
   function initLiveSite() {
-    try { applyConfig(getConfig(), document); } catch (e) { /* fail safe: keep default look */ }
-    // Live preview channel from the admin editor
+    // 1) Apply immediately from localStorage-or-defaults (no flash, instant for the admin).
+    try { applyConfig(getConfig(), document); } catch (e) {}
+
+    // 2) Refine with the globally-published config so every visitor sees published changes.
+    fetchGlobal(function (globalCfg) {
+      if (globalCfg) {
+        var merged = deepMerge(DEFAULT_CONFIG, deepMerge(globalCfg, getLocalRaw() || {}));
+        try { applyConfig(merged, document); } catch (e) {}
+      }
+    });
+
+    // 3) Live preview channel from the admin editor (instant, no reload).
     window.addEventListener('message', function (e) {
       if (e.data && e.data.type === 'applyConfig' && e.data.config) {
         try { applyConfig(e.data.config, document); } catch (err) {}
+      }
+    });
+
+    // 4) Cross-tab sync — if the admin saves in another tab, update this one live.
+    window.addEventListener('storage', function (e) {
+      if (e.key === STORAGE_KEY) {
+        try { applyConfig(getConfig(), document); } catch (err) {}
       }
     });
   }
