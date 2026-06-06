@@ -3330,6 +3330,9 @@ section:first-of-type {
     });
   });
 
+  // Initial render — activates the 4-item collapse + faded 5th + "View all" on load
+  applyFilters();
+
   // ============ PROJECT DETAIL — HASH ROUTING ============
   const detailPanel = document.getElementById('projectDetail');
   const detailEyebrow = document.getElementById('detailEyebrow');
