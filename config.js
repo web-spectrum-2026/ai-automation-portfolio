@@ -152,8 +152,8 @@
       whatsapp: '2348064103799'
     },
     layout: {
-      order: ['work', 'about', 'capabilities', 'tools', 'workflows', 'approach', 'contact'],
-      visible: { work: true, about: true, capabilities: true, tools: true, workflows: true, approach: true, contact: true }
+      order: ['work', 'about', 'press', 'capabilities', 'tools', 'workflows', 'approach', 'contact'],
+      visible: { work: true, about: true, press: true, capabilities: true, tools: true, workflows: true, approach: true, contact: true }
     }
   };
 
